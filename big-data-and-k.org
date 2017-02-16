@@ -1,0 +1,96 @@
+#+title: big data and k
+
+* linear regression
+#+begin_src k
+X: (!15) ^/:\: 0 1 2
+C: 2 3 5
+Y: C _dot/: X
+B: Y _lsq +X     / gives back C
+#+end_src
+
+
+* how big is big?
+
+| thing               | value | bits | digits |
+|---------------------+-------+------+--------|
+| 32-bit numbers      |       |      |        |
+| population of earth |       |      |        |
+| poker hands         |       |      |        |
+| samples in a song   |       |      |        |
+
+* visualizing data in terms of images
+- worring about saving a profile picture's worth of space is silly
+
+* what do you do with it?
+- acquire it (transactions, surveys, etc)
+- visualize it
+
+* big data observations
+- how much of the data can you actually have?
+  - some data lost to history or unknown to science
+  - often  what you really care about is the future
+  - practical to collect?
+    - what fits on disk? (not usually a concern, but...)
+ - repeated observations over time and/or space (--ajk)
+
+* ascii graphing
+#+begin_src k
+scale: {mx: |/ x; x * % mx}
+graph: {`0:" *" @(!100) </: 100 * scale x}
+#+end_src
+
+* operations on indices
+#+begin_src k
+group: =
+grdup: <
+grddn: >
+gfirst: {*:'=x}  "hello"  / same thing.
+gfirst: {x?/:?x} "hello"  / position of first of each unique
+expand: {x@&y}            / {,/ y #' x}
+#+end_src
+
+* primes less than n
+#+begin_src k
+plt: {[n] 2 _ & ~(!n) _lin ? ,/{x*/:\:x} @ 2+ ! n%2}  / O(N^2)
+#+end_src
+
+* histogram
+#+begin_src k
+hist: {+(?x; #:'= x)}       / histogram
+#+end_src
+
+* bits
+#+begin_src k
+logb: {[b;n] (_log n) % _log b}
+log2: logb[2]
+nbits: {_ _ceil log2 x+1}
+bits:{(-x) # (x #0), 2 _vs y}
+#+end_src
+
+* timings
+#+begin_src k
+tms: {[t;src] a:(); do[t;a,: ."\\t ",src]; a}
+#+end_src
+
+* stats
+#+begin_src k
+mean:{(+/x) % #x}
+stdev:{_sqrt mean _sqr x - mean x}
+#+end_src
+
+* combinations
+#+begin_src k
+fact:{*/1+!x}
+C:{[p;n] fact[p] % fact[p-n] * fact[n]}  / except that theory < practice. see log2 fact[52]
+C:{[p;n] (*/n#p-!p) % */1+!n}
+#+end_src
+
+* cards
+#+begin_src k
+deck: `$,/ "A23456789TJQK" ,/:\: "hdcs"
+#+end_src
+
+* format as decimal
+#+begin_src k
+fmt: {s:$x; if[4>#s;:s]; c:(#s)!3; (c#s),,/",",/: -1 3 # c _ s}
+#+end_src
