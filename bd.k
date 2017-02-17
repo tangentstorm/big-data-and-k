@@ -21,12 +21,12 @@ csv:{[x]                             / csv filename -> dict of columns
 :res}
 
 / load our data
-t: .(); ts: `min`pop`gdp`bud`mil
-if[`min _in ts; t.min: csv "data/min.csv"]
-if[`pop _in ts; t.pop: csv "data/countries-pop.csv";]
-if[`gdp _in ts; t.gdp: csv "data/countries-pop.csv";]
-if[`bud _in ts; t.bud: csv "data/countries-bud.csv";]
-if[`mil _in ts; t.mil: csv "data/countries-mil.csv";]
+db: .(); ts: `min`pop`gdp`bud`mil
+if[`min _in ts; db.min: csv "data/min.csv"]
+if[`pop _in ts; db.pop: csv "data/countries-pop.csv";]
+if[`gdp _in ts; db.gdp: csv "data/countries-pop.csv";]
+if[`bud _in ts; db.bud: csv "data/countries-bud.csv";]
+if[`mil _in ts; db.mil: csv "data/countries-mil.csv";]
 
 
 / ansi colors
@@ -81,4 +81,7 @@ C:{[p;n] (*/n#p-!p) % */1+!n}
 
 / format as decimal
 fmt: {s:$x; if[4>#s;:s]; c:(#s)!3; (c#s),,/",",/: -1 3 # c _ s}
+
+\clear      / clear screen and show our welcome message:.
+`6:,//((fg'"mYRYRrrrrm"),'"[1010data]";fg"W";" Welcome to k.";fg"w";"\n\n  ")
 
