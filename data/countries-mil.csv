@@ -1,4 +1,5 @@
-@cn flag,country,active_mil,reserve_mil,paramil,total,per1kcap_total,per1kcap_active
+@cn country,active_mil,reserve_mil,paramil,total,per1kcap_total,per1kcap_active
+@ct a,i,i,i,i,f,f
 Afghanistan,185800,0,152350,338150,10.6,5.8
 Albania,14250,0,500,14750,5.1,4.9
 Algeria,520000,400000,110000,1030000,26.1,13.2

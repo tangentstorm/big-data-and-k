@@ -1,5 +1,5 @@
-rank,country,continent,statregion,pop2016,pop2015,change
-—,World,—,—,7432663275,7349472099
+@cn pop_rank,country,continent,statregion,pop2016,pop2015
+@ct i,a,a,a,i,i
 1,China,Asia,Eastern Asia,1382323332,1376048943
 2,India,Asia,Southern Asia,1326801576,1311050527
 3,United States,Americas,Northern America,324118787,321773631
@@ -228,7 +228,7 @@ rank,country,continent,statregion,pop2016,pop2015,change
 226,Tuvalu,Oceania,Polynesia,9943,9916
 227,Saint Pierre and Miquelon,Americas,Northern America,6301,6288
 228,Montserrat,Americas,Caribbean,5154,5125
-229,Saint Helena, Ascension and Tristan da Cunha,Africa,Western Africa,3956,3961
+229,Saint Helena,Africa,Western Africa,3956,3961
 230,Falkland Islands,Americas,South America,2912,2903
 231,Niue,Oceania,Polynesia,1612,1610
 232,Tokelau,Oceania,Polynesia,1276,1250

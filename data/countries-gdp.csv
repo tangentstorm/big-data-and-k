@@ -1,4 +1,5 @@
 @cn rank,country,gdp
+@ct i,a,i
 1,United States,18036648
 2,China,11158457
 3,Japan,4383076
