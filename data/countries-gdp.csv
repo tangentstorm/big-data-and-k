@@ -1,0 +1,212 @@
+@cn rank,country,gdp
+1,United States,18036648
+2,China,11158457
+3,Japan,4383076
+4,Germany,3363600
+5,United Kingdom,2858003
+6,France,2418945
+7,India,2116239
+8,Italy,1821580
+9,Brazil,1772591
+10,Canada,1552807
+11,South Korea,1377873
+12,Russia,1326016
+13,Australia,1230859
+14,Spain,1192955
+15,Mexico,1140724
+16,Indonesia,861933
+17,Netherlands,750318
+18,Turkey,717887
+19,Switzerland,670789
+20,Saudi Arabia,653219
+21,Sweden,571090
+22,Nigeria,568499
+23,Poland,544959
+24,Argentina,543490
+25,Belgium,531547
+26,Venezuela,509968
+27,Norway,500519
+28,Austria,436888
+29,Iran,425326
+30,Thailand,404824
+31,United Arab Emirates,399451
+32,Colombia,377740
+33,South Africa,349819
+34,Denmark,346119
+35,Malaysia,326933
+36,Singapore,307872
+37,Israel,305673
+38,Philippines,290896
+39,Egypt,282242
+40,Hong Kong,274027
+41,Finland,272217
+42,Chile,258062
+43,Pakistan,251255
+44,Ireland,250814
+45,Greece,235574
+46,Portugal,230117
+47,Iraq,225422
+48,Kazakhstan,216036
+49,Algeria,213518
+50,Qatar,211817
+51,Czech Republic,205270
+52,Peru,201809
+53,Romania,199045
+54,New Zealand,198652
+55,Vietnam,186205
+56,Bangladesh,173062
+57,Kuwait,163637
+58,Angola,146676
+59,Hungary,138347
+60,Ukraine,131806
+61,Morocco,110009
+62,Puerto Rico,103676
+63,Ecuador,100917
+64,Slovakia,100249
+65,Cuba,82775
+66,Sudan,81894
+67,Oman,81797
+68,Belarus,76139
+69,Azerbaijan,75193
+70,Sri Lanka,74941
+71,Myanmar,66478
+72,Luxembourg,64874
+73,Dominican Republic,63969
+74,Uzbekistan,63030
+75,Kenya,60936
+76,Guatemala,58827
+77,Uruguay,57471
+78,Croatia,57137
+79,Bulgaria,56718
+80,Macau,55502
+81,Ethiopia,53638
+82,Lebanon,49631
+83,Costa Rica,49553
+84,Slovenia,49491
+85,Panama,49166
+86,Lithuania,48392
+87,Tanzania,48030
+88,Turkmenistan,47932
+89,Tunisia,47423
+90,Serbia,43866
+91,Libya,41319
+92,Ghana,37177
+93,Yemen,37131
+94,Democratic Republic of the Congo,35909
+95,Jordan,35827
+96,Côte d'Ivoire,34254
+97,Bahrain,33850
+98,Bolivia,32996
+99,Cameroon,32051
+100,Latvia,31286
+101,Paraguay,30985
+102,Trinidad and Tobago,28069
+103,Uganda,27465
+104,Zambia,26963
+105,Estonia,26485
+106,El Salvador,25164
+107,Cyprus,23077
+108,Afghanistan,21122
+109,Honduras,19497
+110,Nepal,19489
+111,Bosnia and Herzegovina,18491
+112,Gabon,17412
+113,North Korea,17396
+114,Brunei,17104
+115,Mozambique,17081
+116,Iceland,17036
+117,Cambodia,16778
+118,Equatorial Guinea,16731
+119,Papua New Guinea,16576
+120,Georgia,16530
+121,Botswana,15813
+122,Senegal,15658
+123,Zimbabwe,14719
+124,Congo, Republic of the,14077
+125,Jamaica,13927
+126,Namibia,13429
+127,Albania,13413
+128,Chad,12791
+129,Arab Palestinian areas,12766
+130,Burkina Faso,12756
+131,Mauritius,12616
+132,Mongolia,12067
+133,Mali,11979
+134,Nicaragua,11806
+135,Laos,11749
+136,Macedonia,11319
+137,South Sudan,11007
+138,Armenia,10889
+139,Madagascar,10674
+140,Malta,10536
+141,New Caledonia,10234
+142,Benin,9575
+143,Tajikistan,9242
+144,Haiti,8599
+145,The Bahamas,8510
+146,Niger,8169
+147,Moldova,7944
+148,Rwanda,7903
+149,Kyrgyzstan,7404
+150,Kosovo,7387
+151,Monaco,7060
+152,Guinea,6579
+153,Liechtenstein,5855
+154,Malawi,5720
+155,French Polynesia,5623
+156,Bermuda,5601
+157,Suriname,5210
+158,Mauritania,5092
+159,Timor-Leste,4970
+160,Sierra Leone,4893
+161,Montenegro,4588
+162,Togo,4576
+163,Fiji,4532
+164,Swaziland,4482
+165,Barbados,4353
+166,Eritrea,3858
+167,Cayman Islands,3480
+168,Andorra,3278
+169,Curaçao,3159
+170,Guyana,3086
+171,Maldives,3032
+172,Burundi,2869
+173,Aruba,2664
+174,Greenland,2441
+175,Liberia,2122
+176,Lesotho,2081
+177,Bhutan,1965
+178,Cape Verde,1855
+179,San Marino,1845
+180,Central African Republic,1838
+181,Belize,1699
+182,Djibouti,1589
+183,Seychelles,1511
+184,Saint Lucia,1406
+185,Somalia,1375
+186,Zanzibar,1289
+187,Antigua and Barbuda,1248
+188,Guinea-Bissau,1209
+189,Solomon Islands,1103
+190,Sint Maarten,1059
+191,British Virgin Islands,902
+192,Grenada,884
+193,Saint Kitts and Nevis,852
+194,The Gambia,851
+195,Samoa,824
+196,Vanuatu,812
+197,Turks and Caicos Islands,797
+198,Saint Vincent and the Grenadines,729
+199,Comoros,648
+200,Dominica,533
+201,Tonga,435
+202,São Tomé and Príncipe,337
+203,Federated States of Micronesia,308
+204,Cook Islands,311
+205,Anguilla,311
+206,Palau,234
+207,Marshall Islands,209
+208,Nauru,182
+209,Kiribati,180
+210,Montserrat,63
+211,Tuvalu,38
