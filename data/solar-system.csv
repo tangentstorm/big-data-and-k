@@ -1,0 +1,21 @@
+@cn name,type,orbits,rkm,vol,mass
+@ct a,a,a,i,i,i
+Sun,star,-,696324,1414300000,1988550000
+Jupiter,planet,Sun,69911,1431280,1898600
+Saturn,planet,Sun,58232,827130,568460
+Uranus,planet,Sun,25362,68340,86832
+Neptune,planet,Sun,24622,62540,102430
+Earth,planet,Sun,6371,1083,59736
+Venus,planet,Sun,6051,928,4868
+Mars,planet,Sun,3389,163,642
+Ganymede,planet,Jupiter,2634,76,148
+Titan,moon,Saturn,2576,71,134
+Mercury,planet,Sun,2439,60,330
+Callisto,moon,Jupiter,2410,58,108
+Io,moon,Jupiter,1821,25,89
+Moon,moon,Earth,1737,21,74
+Europa,moon,Jupiter,1560,16,48
+Triton,moon,Neptune,1353,10,21
+Pluto,dwarf planet,Sun,1186,7,13
+Eris,dwarf planet,Sun,1163,6,17
+Titania,moon,Uranus,788,2,3
