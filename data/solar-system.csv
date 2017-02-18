@@ -16,6 +16,6 @@ Io,moon,Jupiter,1821,25,89
 Moon,moon,Earth,1737,21,74
 Europa,moon,Jupiter,1560,16,48
 Triton,moon,Neptune,1353,10,21
-Pluto,dwarf planet,Sun,1186,7,13
-Eris,dwarf planet,Sun,1163,6,17
+Pluto,dwarf,Sun,1186,7,13
+Eris,dwarf,Sun,1163,6,17
 Titania,moon,Uranus,788,2,3
