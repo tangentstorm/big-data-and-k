@@ -6,7 +6,10 @@
 fact:{*/1+!x}
 avg:{(+/x) % #x}
 stdev:{_sqrt mean _sqr x - mean x}
-merge:?,
+
+/ tacit style
+round: _ 0.5 +
+merge: ?,
 
 / histogram
 hist: {+(?x; #:'= x)}       / histogram
@@ -28,23 +31,19 @@ log2: logb[2]
 nbits:{_ _ceil log2 x+1}
 bits:{(-x) # (x #0), 2 _vs y}
 
-/ grouping / sorting demo
-!db
-!db.sol
-nm:db.sol.name
-tp:db.sol.type
-<nm
-nm@<nm
-=tp
-tp@=tp
-
-
 
 / string operations (also work on arrays)
 cut: {[c;s] 1 _' (&c=s) _ s:c,s}
 rpad:{[c;w;s] w#s,w#c}
 lpad:{[c;w;s] (-w)#(w#c),s}
 join:{[sep;strs] (#sep)_,/sep,/:lpad[" ";5]'$strs}
+
+/ some operations on indices
+gfirst: {*:'=x}   / first of each group by unique key
+expand: {x@&y}    / {,/ y #' x}
+
+
+/ == scary internal stuff ==================================
 
 / csv loader (note: doesn't handle quoted commas)
 csv:{[x]                             / csv filename -> dict of columns
@@ -88,17 +87,8 @@ err:{[msg;data] `0:,/(fg"R";msg;":";fg"r";"\n";5:data;fg"w";"\n")}
 log:{[msg;data] `0:,/(fg"G";msg;":";fg"g";"\n";5:data;fg"w";"\n")}
 
 
-/ operations on indices
-group: =
-gradu: <
-gradn: >
-gfirst: {x?/:?x} "hello"  / position of first of each unique
-gfirst: {*:'=x}  "hello"  / same thing.
-expand: {x@&y}            / {,/ y #' x}
-
 / timed eval
 tms: {[t;src] a:(); do[t;a,: ."\\t ",src]; a}
-
 
 / combinations
 bad_C:{[p;n] fact[p] % fact[p-n] * fact[n]}  / except that theory < practice. see log2 fact[52]
@@ -111,9 +101,38 @@ fmt: {s:$x; if[4>#s;:s]; c:(#s)!3; (c#s),,/",",/: -1 3 # c _ s}
 plt: {[n] 2 _ & ~(!n) _lin ? ,/{x*/:\:x} @ 2+ ! n%2};
 
 
+/ == demos =================================================
+
+/ grouping / sorting demo
+!db
+!db.sol
+nm:db.sol.name
+tp:db.sol.type
+<nm
+nm@<nm
+=tp
+tp@=tp
+
+
+/ linear regression demo
+X: (!15) ^/:\: 0 1 2    / basis polynomial: 1 + x + x^2
+C: 2 3 5                / coefficients
+      C */: X           / multiply C by each row of X
+  +/' C */: X           / sum each row
+   C _dot/: X           / same thing, simplified
+Y: C _dot/: X           / assign it to y
+B: Y _lsq +X            / 'divide' by transpose of X
+
+/ this next line introduces some noise. try running a few times.
+N: 10 * -0.5 + (#Y) _draw 0;   round (Y+N) _lsq +X
+
+
 / bits of primes less than k...
 + bits[8]' plt 256
 
+
+
+/ == end demos, show welcome msg.. =========================
 
 \clear      / clear screen and show our welcome message:.
 `6:,//((fg'"mYRYRrrrrm"),'"[1010data]";fg"W";" Welcome to k.";fg"w";"\n\n  ")
