@@ -1,5 +1,5 @@
 @cn bud_rank, country, billions, pct_gdp
-@ct i,r,f,f
+@ct i,a,f,f
 1,United States,596.0,3.3
 2,China,215.0,1.9
 3,Saudi Arabia,87.2,13.7

@@ -1,4 +1,4 @@
-@cn rank,country,gdp
+@cn gdp_rank,country,gdp
 @ct i,a,i
 1,United States,18036648
 2,China,11158457
@@ -123,7 +123,7 @@
 121,Botswana,15813
 122,Senegal,15658
 123,Zimbabwe,14719
-124,Congo, Republic of the,14077
+124,Republic of the Congo,14077
 125,Jamaica,13927
 126,Namibia,13429
 127,Albania,13413
