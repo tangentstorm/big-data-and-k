@@ -14,6 +14,11 @@ merge: ?,
 / histogram
 hist: {+(?x; #:'= x)}       / histogram
 
+/ using / and \
+pas: 10{+':0,x,0}\1
+fib: 50 {x,+/x}/ 1          / try `fib 5 10`
+phi: (1+%:)/1.0
+
 / ascii graphing
 scale: {mx: |/ x; x * % mx}
 graph: {`0:" *" @(!100) </: 100 * scale x}
@@ -25,11 +30,30 @@ card: {,/(cardc x; $x; bg"k";" ")}         / render card in ansi color
 showc: {`6:,/ card'[x], "\n"}              / print a list of cards
 showc deck
 
+/ permutations and combinations
+hperms: */52-!5
+hcombs: hperms % fact 5
+
+C0:{[p;n] fact[p] % fact[p-n] * fact[n]}  / except that theory < practice. see log2 fact[52]
+C:{[p;n] (*/n#p-!p) % */1+!n}
+hcombs: C[52;5]
+
+/ random hand: mixed base number
+hbase: 52-!5
+hbase _vs 0
+hbase _vs hperms-1
+                            rhnum: *_draw[1;hperms]
+                  hbase _vs rhnum: *_draw[1;hperms]
+do[10;showc deck@ hbase _vs rhnum: *_draw[1;hperms]] `6:fg"w"
+
 / bits
+bits:{(-x) # (x #0), 2 _vs y}
+nbits:1|#2_vs
+
 logb: {[b;n] (_log n) % _log b}
 log2: logb[2]
 nbits:{_ _ceil log2 x+1}
-bits:{(-x) # (x #0), 2 _vs y}
+
 
 
 / string operations (also work on arrays)
@@ -56,6 +80,10 @@ csv:{[x]                             / csv filename -> dict of columns
   tmap:.((`i;0);(`f;0.0);(`a;`))     / type map for @ct line
   res[cols]: tmap[typs] $'+ 2_ rows  / drop meta rows, transpose rest, convert types, add to tbl.
 :res}
+
+/ show a table
+from:{[t;pv] if[@pv;pv:,pv] r:.(); r[!t]:t[;pv]; r}
+show:{[t] w:11;`0:"\n",,/'w$(,!t),(,(#!t)#,w#"-"),+t[;]}
 
 / load our data
 db: .(); ts: `min`pop`gdp`bud`mil`sol
@@ -85,14 +113,11 @@ bg:c_[;40]
 demo:{`6:,/{fg[x],x}'[pal],fg["w"],"\n"}
 err:{[msg;data] `0:,/(fg"R";msg;":";fg"r";"\n";5:data;fg"w";"\n")}
 log:{[msg;data] `0:,/(fg"G";msg;":";fg"g";"\n";5:data;fg"w";"\n")}
+echo:{`0:(5:x),"\n"}
 
 
 / timed eval
 tms: {[t;src] a:(); do[t;a,: ."\\t ",src]; a}
-
-/ combinations
-bad_C:{[p;n] fact[p] % fact[p-n] * fact[n]}  / except that theory < practice. see log2 fact[52]
-C:{[p;n] (*/n#p-!p) % */1+!n}
 
 / format as decimal
 fmt: {s:$x; if[4>#s;:s]; c:(#s)!3; (c#s),,/",",/: -1 3 # c _ s}
@@ -114,25 +139,32 @@ nm@<nm
 tp@=tp
 
 
+/ table demos
+t: db.sol
+show from[t]@  <t.rkm
+show from[t]@  <t.vol
+show from[t]@  &~t.type=`planet
+
 / linear regression demo
-X: (!15) ^/:\: 0 1 2    / basis polynomial: 1 + x + x^2
-C: 2 3 5                / coefficients
-      C */: X           / multiply C by each row of X
-  +/' C */: X           / sum each row
-   C _dot/: X           / same thing, simplified
-Y: C _dot/: X           / assign it to y
-B: Y _lsq +X            / 'divide' by transpose of X
+p: (!15) ^/:\: 0 1 2    / basis polynomial p: 1 + x + x^2
+c: 2 3 5                / coefficients
+      c */: p           / multiply c by each row of p
+  +/' c */: p           / sum each row
+   c _dot/: p           / same thing, simplified
+y: c _dot/: p           / assign it to y
+   y _lsq +p            / 'divide' by +p to (hopefully) get c
 
-/ this next line introduces some noise. try running a few times.
-N: 10 * -0.5 + (#Y) _draw 0;   round (Y+N) _lsq +X
 
+ns: 10*-0.5+(#y)_draw 0 / noise
+round (y+ns) _lsq +p    / should be close. depends on ns
+
+/ try runing it many times:
+i:0;do[10;ns: 10*-0.5+(#y)_draw 0; echo(i+:1; round(y+ns)_lsq+p)]
 
 / bits of primes less than k...
 + bits[8]' plt 256
 
 
-
 / == end demos, show welcome msg.. =========================
-
-\clear      / clear screen and show our welcome message:.
-`6:,//((fg'"mYRYRrrrrm"),'"[1010data]";fg"W";" Welcome to k.";fg"w";"\n\n  ")
+cls:{`6:,//("\33[2J";(fg'"mYRYRrrrrm"),'"[1010data]";fg"W";" Welcome to k.";fg"w";"\n\n")}
+cls[];`0:"  "
