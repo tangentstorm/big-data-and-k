@@ -5,7 +5,7 @@
 / some simple functions
 fact:{*/1+!x}
 avg:{(+/x) % #x}
-stdev:{_sqrt mean _sqr x - mean x}
+stdev:{% avg (x*x) - avg x}
 
 / tacit style
 round: _ 0.5 +
@@ -20,8 +20,8 @@ fib: 50 {x,+/x}/ 1          / try `fib 5 10`
 phi: (1+%:)/1.0
 
 / ascii graphing
-scale: {mx: |/ x; x * % mx}
-graph: {`0:" *" @(!100) </: 100 * scale x}
+scale: {mx: |/ x; x% mx}
+graph: {`0:" *" @(!100) </: 100 * scale x;}
 
 / a deck of cards
 deck: `$,/ "A23456789TJQK" ,/:\: "cdhs"    / all 52 cards
@@ -63,8 +63,10 @@ lpad:{[c;w;s] (-w)#(w#c),s}
 join:{[sep;strs] (#sep)_,/sep,/:lpad[" ";5]'$strs}
 
 / some operations on indices
+
 gfirst: {*:'=x}   / first of each group by unique key
 expand: {x@&y}    / {,/ y #' x}
+
 
 
 / == scary internal stuff ==================================
@@ -98,18 +100,20 @@ if[`sol _in ts; db.sol: csv "data/solar-system.csv";]
 bighalf:{(1+x)%2}
 MEM:(();,1)
 cuts:{
-  `0:,/($x;"\n")
+
+`0:,/($x;"\n")
   :[x<1; :()]
+
   :[x<#MEM; :MEM[x]]
   log["t"; t:+(x-i; i:!x)]
   MEM,: res: ,/{x,/:cuts[y]}/'1 _ t
-:res}
+res}
 
 / ansi colors
 pal:"krgybmcwKRGYBMCW"
-c_:{c:*$x; "\33[00;", :[(_ic c)>96;"";"01;"], ($y+(pal?c)!8), "m"}
-fg:c_[;30]
-bg:c_[;40]
+cc:{c:*$x; "\33[00;", $[c>96;"";"01;"], ($y+(pal?c)!8), "m"}
+fg:cc[;30]
+bg:cc[;40]
 demo:{`6:,/{fg[x],x}'[pal],fg["w"],"\n"}
 err:{[msg;data] `0:,/(fg"R";msg;":";fg"r";"\n";5:data;fg"w";"\n")}
 log:{[msg;data] `0:,/(fg"G";msg;":";fg"g";"\n";5:data;fg"w";"\n")}
@@ -165,6 +169,7 @@ i:0;do[10;ns: 10*-0.5+(#y)_draw 0; echo(i+:1; round(y+ns)_lsq+p)]
 + bits[8]' plt 256
 
 
+
 / == end demos, show welcome msg.. =========================
-cls:{`6:,//("\33[2J";(fg'"mYRYRrrrrm"),'"[1010data]";fg"W";" Welcome to k.";fg"w";"\n\n")}
+cls:{`0:,//("\33[2J";(fg'"mYRYRrrrrm"),'"[1010data]";fg"W";" Welcome to k.";fg"w";"\n\n")}
 cls[];`0:"  "
