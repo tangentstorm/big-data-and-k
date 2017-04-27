@@ -1,6 +1,4 @@
-# big data: some tools for thought
 
-Notes for my talk at stony brook's Hack@CEWIT event.
+Notes for my evolving presentation on programming in K.
 
-http://www.cewit.org/hack/
 
