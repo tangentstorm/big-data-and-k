@@ -1,5 +1,6 @@
 
 * Scope
+
 It's ugly and complicated, but here's all you really need to know.
 
 Global stuff goes in the k-tree. It's just a big nested dictionary.
@@ -284,4 +285,4 @@ A permutation vector can be used over and over again on many different arrays of
 This lets us do interesting things, like grading a column in a table, and using the resulting permutation vector to sort not only that column, but other columns in that table as well.
 
 (and then show some live demos)
-(if time, follow up with one last permutation: the magic square thing)
+
