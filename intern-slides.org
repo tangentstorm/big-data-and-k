@@ -288,8 +288,32 @@ The grade of a permutation vector is the inverse permutation.
 * a mystery function
 
 #+begin_src k
+  f: {&2=#:'&:'+{0,n#(x#0),1}@/:!n:x}
+
+  f 3
+2 3
+#+end_src
+
+* mystery function, take 2
+
+#+begin_src k
+  /  {&2=#:'&:'+{0,n#(x#0),1}@/:!n:x}
+
   f: {&2=+/{0,n#&x,1}@/:!n:x}
 
-  f 5
-2 3 5
+  f 3
+2 3
 #+end_src
+
+* mystery function, take 3
+
+#+begin_src k
+  /  {&2=#:'&:'+{0,n#(x#0),1}@/:!n:x}
+  /  {&2=+/{0,n#&x,1}@/:!n:x}
+
+  f: {&2=+/{0,n#&x,1}'!n:x}
+
+  f 3
+2 3
+#+end_src
+
