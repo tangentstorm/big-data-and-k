@@ -1,6 +1,6 @@
 / ----------------------------------------
 / stuff for my "big data in k" talk 
-/ ----------------------------------------
+
 
 / some simple functions
 fact:{*/1+!x}
@@ -66,7 +66,6 @@ join:{[sep;strs] (#sep)_,/sep,/:lpad[" ";5]'$strs}
 gfirst: {*:'=x}   / first of each group by unique key
 expand: {x@&y}    / {,/ y #' x}
 
-
 / == scary internal stuff ==================================
 
 / csv loader (note: doesn't handle quoted commas)
@@ -126,6 +125,9 @@ fmt: {s:$x; if[4>#s;:s]; c:(#s)!3; (c#s),,/",",/: -1 3 # c _ s}
 plt: {[n] 2 _ & ~(!n) _lin ? ,/{x*/:\:x} @ 2+ ! n%2}
 
 
+
+
+
 / == demos =================================================
 
 / grouping / sorting demo
@@ -144,6 +146,31 @@ t: db.sol
 show from[t]@  <t.rkm
 show from[t]@  <t.vol
 show from[t]@  &~t.type=`planet
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 / linear regression demo
 p: (!15) ^/:\: 0 1 2    / basis polynomial p: 1 + x + x^2
@@ -168,3 +195,20 @@ i:0;do[10;ns: 10*-0.5+(#y)_draw 0; echo(i+:1; round(y+ns)_lsq+p)]
 / == end demos, show welcome msg.. =========================
 cls:{`6:,//("\33[2J";(fg'"mYRYRrrrrm"),'"[1010data]";fg"W";" Welcome to k.";fg"w";"\n\n")}
 cls[];`0:"  "
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
