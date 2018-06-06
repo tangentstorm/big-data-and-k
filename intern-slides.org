@@ -10,55 +10,138 @@
 # !! :( couldn't get this to work:
 # #+BEAMER_OUTER_THEME: miniframes [subsection=true]
 # #+BEAMER_HEADER: \setbeamertemplate{navigation symbols}{}
+#+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
 
+#+startup: beamer
 # !! to get this to export, I had to re-launch emacs from a shell after
 #    $ export PATH=$PATH:/usr/local/texlive/2016/bin/x86_64-darwin/
 #    then: c-c c-e l O
 
 * scope
-** directories
 ** closures
-*** Prelude: Scope
+*** Closures
 
-It's ugly and complicated, but here's all you really need to know.
+You probably don't want them.
 
-- Global stuff goes in the k-tree. It's just a big nested dictionary.
+*** K has simple closures
 
-- You can change your location in the tree with =\d= and query it with =_d=.
+Simple Javascript closure:
 
-*** Scope: functions and the k-tree
-
-Functions run in the current directory, not the one where they were defined:
-
-#+begin_src k
-  .d.i: 100
-  .d.set:{i::x}
-  .d.get:{i}
-  .d.set 123
-  .d.get `
-123
-  .d.i
-100
-  i
+#+begin_src javascript
+  > f = (x) => (y) => x + y
+  > f(100)(23)
 123
 #+end_src
 
-*** Scope: closures
-
-Closures work, but only one level deep.
+Same thing in K3:
 
 #+begin_src k
-  {n:123; {m:101; {(n;m)}}}[`][`][`]
-(;101)
+  f: {[x] {[y] x+y }}
+  f[100][23]
+123
 #+end_src
 
-so if you need nested closures, pass everything you want to close over explicitly.
+*** Projections
 
-*** Scope: misc
+#+begin_src k
+  f: +
+  f[100][23]
+123
+#+end_src
 
-- you can use =x::123= to assign globals, but probably shoudn't.
-- instead use =.path.to.x: 123=
-- pass a symbol containing a path to use an arbitrary scope.
+*** Projections, pt 2
+
+#+begin_src k
+  triple: { x, y, z }
+  embrace: triple[ "{"; ; "}"]   / note missing 'y'
+  embrace "k3"
+"{k3}"
+#+end_src
+
+*** Closure Blues: only 2 levels
+
+#+begin_src k
+  r: 123
+
+  {r}[]
+123
+
+  {r: 1010; {r}}[][]
+1010
+
+  {r: 1010; {{r}}}[][][]   / nope.
+123
+
+  {{r: 1010 {r}}}[][][]
+1010
+#+end_src
+
+*** Closure Blues: read-only values
+
+javascript:
+
+#+begin_src javascript
+  > counter = ()=> { let i = 0; return () => i++ }
+  > c = counter()
+  > [c(), c(), c()]
+[0, 1, 2]
+#+end_src
+
+k3:
+
+#+begin_src k
+  counter: {i:0; {[] :i+:1}}
+  c: counter[]
+  (c[]; c[]; c[])
+1 1 1
+#+end_src
+
+*** k-tree to the rescue!
+
+#+begin_src k
+  counter: {i::0; {[] :i:: i+1}}   / note '::' vs ':'
+  c: counter[]
+
+  (c[]; c[]; c[])
+3 2 1
+
+  i   / the count is stored in the k-tree
+3
+#+end_src
+
+
+** the k-tree
+
+*** function binding
+
+#+begin_src k
+  \d .d
+  .d.f: {v};   v: "in .d"
+
+  \d .k
+  .d.g: {v};   v: "in .k"
+
+  .d.f[]
+"in .d"
+
+  .d.g[]
+"in .k"
+#+end_src
+
+*** symbol as reference
+#+begin_src k
+  .d.v: "in .d"
+  .k.v: "in .k"
+
+  f:{x[`v]}
+
+  f `.d
+"in .d"
+
+  f `.k
+"in .k"
+#+end_src
+
 
 
 * applications
