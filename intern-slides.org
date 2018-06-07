@@ -46,15 +46,9 @@ so if you need nested closures, pass everything you want to close over explicitl
 
 
 * Arrays as functions
-** Lookup tables
 
-Most obvious example is a lookup table: it just maps the natural numbers up to =#a= to an item in =a=:
-
-#+begin_src k
-sqr:  0 1 4 9 25 36 49 64 81 100 # squares for domain !11
-#+end_src
-
-** Memoization
+** goal: fib
+*** Memoization
 
 #+begin_src k
   fibs: 1 1
@@ -65,29 +59,21 @@ sqr:  0 1 4 9 25 36 49 64 81 100 # squares for domain !11
 1 1 2 3 5 8 13 21 34 55 89 144 233
 #+end_src
 
-** @ as interpreter
+** goal: choose[k;n]
 
+Cnk: 52 (1,,[;1]@+':)\ 1
+
+
+** goal: h2d
+*** char to number
+*** powers of 16
 #+begin_src k
-  @[fibs; 7]
-21
-  @["abcdefghijklmnop"; 7]
-"h"
+  {x* _16^!#x}
+  {x* */1,1_(#x)#16]}
 #+end_src
-
-** Another array interpreter
-
-#+begin_src k
-  p: {+/x*y^!#x}
-
-  _ p[|1 0 1 0; 10]
-1010
-
-  _ p[|1 0 1 0;  2]
-10
-
-#+end_src
-
-** _sv
+*** powers of 10?
+*** projection!
+*** _sv
 
 #+begin_src k
   p[1 2 0 ; 5]
@@ -96,60 +82,23 @@ sqr:  0 1 4 9 25 36 49 64 81 100 # squares for domain !11
 35
 #+end_src
 
-** a small refactoring
 
-#+begin_src k
-  dot: {+/x*y}
-  p: {dot[x; y^|!#x]}
-  p[1 2 3 4; 10]
-#+end_src
 
-** Im
+** polynomials
+*** simple examples
 
-#+begin_src k
-  Im: {{x=/:x}@!x};  Im 4
-(1 0 0 0
- 0 1 0 0
- 0 0 1 0
- 0 0 0 1)
-#+end_src
+/ +/  _ x⁰, _ x¹, _ x², _ x³
+_sv[  0     0     0     0 ; i: !10 ]
+_sv[  0     0     0     0 ; i ]
+_sv[  0     0     0     0 ; i ]
+_sv[  0     0     0     0 ; i ]
 
-** vector-matrix multiplication
 
-#+begin_src k
-  dot[Im 4; 1 2 3 4 ]
-1 2 3 4
-  dot[1 2 3 4; Im 4 ]
-1 2 3 4
-#+end_src
+** goal: take the derivative
 
-** matrix product
+*** calculus refresher
 
-#+begin_src k
-  dot[Im 4; Im 4]
-1 1 1 1
-
-  dot/:[Im 4; Im 4]
-(1 0 0 0
- 0 1 0 0
- 0 0 1 0
- 0 0 0 1)
-#+end_src
-
-** cross products
-
-#+begin_src k
-  dot\:/:[2 3 5; 7 11]
-(14 21 35
- 22 33 55)
-
-  dot/:\:[2 3 5; 7 11]
-(14 22
- 21 33
- 35 55)
-#+end_src
-
-** Dm
+*** derivatives
 
 #+begin_src k
   Dm:{1!'(!x)*Im x}
@@ -161,7 +110,7 @@ sqr:  0 1 4 9 25 36 49 64 81 100 # squares for domain !11
  0 0 3 0)
 #+end_src
 
-** Dm in action!
+*** Dm in action!
 
 #+begin_src k
   Dm 4
@@ -176,7 +125,44 @@ sqr:  0 1 4 9 25 36 49 64 81 100 # squares for domain !11
 3 10 21 0
 #+end_src
 
-** Another fine matrix
+
+
+** dot product: matrices
+*** identity matrix
+#+begin_src k
+/  Im: {{x=/:x}@!x};  Im 4
+   Im: {v=/:v:!x};  Im 4
+(1 0 0 0
+ 0 1 0 0
+ 0 0 1 0
+ 0 0 0 1)
+#+end_src
+
+:  Im: {v=/:v:!x};  Im 4
+
+*** general tables
+#+begin_src k
+  tb: {[f;x] v (f/:) v:!x}
+
+  tb[+;4]
+#+end_src
+
+*** matrix as dyad
+#+begin_src k
+  mul: v */: v:!10
+  mul[ 3; 6 ]
+  mul/ 7 2
+#+end_src
+
+*** state machine!
+#+begin_src k
+
+#+end_src
+
+** goal: integration
+
+** goal: permutations
+*** Another fine matrix
 
 #+begin_src k
   m: {x=/:(!#x)} 5 2 1 0 4 3
@@ -200,7 +186,7 @@ sqr:  0 1 4 9 25 36 49 64 81 100 # squares for domain !11
  0 0 0 0 1 0
  1 0 0 0 0 0)
 
-  dot[m] 2 3 5 7 11 13
+  m (+/*) 2 3 5 7 11 13
 13 5 3 2 11 7
 #+end_src
 
