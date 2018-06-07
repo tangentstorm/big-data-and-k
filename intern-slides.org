@@ -6,13 +6,21 @@
 #+BEAMER_THEME: Madrid
 #+BEAMER_FONT_THEME: default
 #+BEAMER_OUTER_THEME: tree
-#+BEAMER_HEADER: \documentclass[slidestop]{beamer}
-# !! :( couldn't get this to work:
+
+# !! I couldn't get this to hide the per-page symbols at the top,
+#    and they were taking up most of the page. (so i used 'tree' instead)
 # #+BEAMER_OUTER_THEME: miniframes [subsection=true]
 # #+BEAMER_HEADER: \setbeamertemplate{navigation symbols}{}
+
+# !! this was supposed keep slides from vertically centering,
+#    but I can't get it to work either.
+#+BEAMER_HEADER: \documentclass[slidestop]{beamer}
+
+# this next line keeps latex from prettifying the backtick
+#+LATEX_HEADER: \usepackage{upquote}
+
 #+COLUMNS: %40ITEM %10BEAMER_env(Env) %9BEAMER_envargs(Env Args) %4BEAMER_col(Col) %10BEAMER_extra(Extra)
 
-#+startup: beamer
 # !! to get this to export, I had to re-launch emacs from a shell after
 #    $ export PATH=$PATH:/usr/local/texlive/2016/bin/x86_64-darwin/
 #    then: c-c c-e l O
@@ -264,12 +272,14 @@ k3:
 *** how it works
 #+begin_src k
   C[52]
-1 52 1326 22100 270725 2598960 20358520 133784560 752538150 -615891896 -1359844964 274186696
-220976662 -641600208 -560181352 1730516592 -561583133 -1694525140 1477275890 156986316 1762265975
--1814131872 -1775373584 111885536 2103721700 -1938798992 134115464 -1938798992 2103721700 111885536
--1775373584 -1814131872 1762265975 156986316 1477275890 -1694525140 -561583133 1730516592 -560181352
--641600208 220976662 274186696 -1359844964 -615891896 752538150 133784560 20358520 2598960 270725
-22100 1326 52 1
+1 52 1326 22100 270725 2598960 20358520 133784560 752538150 -615891896
+-1359844964 274186696 220976662 -641600208 -560181352 1730516592
+-561583133 -1694525140 1477275890 156986316 1762265975 -1814131872
+-1775373584 111885536 2103721700 -1938798992 134115464 -1938798992
+2103721700 111885536 -1775373584 -1814131872 1762265975 156986316
+1477275890 -1694525140 -561583133 1730516592 -560181352 -641600208
+220976662 274186696 -1359844964 -615891896 752538150 133784560
+20358520 2598960 270725 22100 1326 52 1
 #+end_src
 
 *** how it works
@@ -446,7 +456,6 @@ Here's a fun thing to do with _vs
 1
 #+end_src
 
-
 *** xor scan
 #+begin_src k
   `0:" X" @ XOR\\ 16#1
@@ -478,13 +487,13 @@ X
 7 17 45 103 203 357 577 875 1263 1753
 #+end_src
 
-Wolfram alpha says the derivative is \{6x^2 + 6x + 5}
+Wolfram alpha says the derivative is 6x^2 + 6x + 5
 
 *** calculus refresher
 
 The polynomial derivative is just a rewrite rule:
 
-   a xⁿ → (a ⋅ n) xⁿ⁻¹
+   a xⁿ → (a × n) xⁿ⁻¹
    a x⁰ → 0
 
 : 2x³  + 3x²  + 5x  +  7
@@ -505,15 +514,13 @@ The polynomial derivative is just a rewrite rule:
 #+end_src
 
 *** dot product
-#+begin_src k
+:   2     0 3 0 0      0 6 0 0
+:   3  ×  0 0 2 0  =   0 0 6 0
+:   5     0 0 0 1      0 0 0 5
+:   7     0 0 0 0    + 0 0 0 0
+: ----------------------------
+:                      0 6 6 5
 
-   2     0 3 0 0      0 6 0 0
-   3  ×  0 0 2 0  =   0 0 6 0
-   5     0 0 0 1      0 0 0 5
-   7     0 0 0 0    + 0 0 0 0
-                    ---------
-                      0 6 6 5
-#+end_src
 
 *** identity matrix
 #+begin_src k
@@ -549,7 +556,7 @@ The polynomial derivative is just a rewrite rule:
  0 0 0 0 1 0
  1 0 0 0 0 0)
 
-  m (+/*) 2 3 5 7 11 13
+  +/ m * 2 3 5 7 11 13
 13 5 3 2 11 7
 #+end_src
 
