@@ -47,57 +47,350 @@ so if you need nested closures, pass everything you want to close over explicitl
 
 * Arrays as functions
 
-** goal: fib
-*** Memoization
-
+** primes
+*** nth prime
 #+begin_src k
-  fibs: 1 1
-  fib: {while[x>-1+#fibs; fibs:: fibs,+/-2#fibs]; fibs x}
+  np 0
+2
+
+  np 37
+163
+
+  np 99
+541
+#+end_src
+
+*** implementation
+#+begin_src k
+  np:    2   3   5   7  11  13  17  19  23  29
+  np,:  31  37  41  43  47  53  59  61  67  71
+  np,:  73  79  83  89  97 101 103 107 109 113
+  np,: 127 131 137 139 149 151 157 163 167 173
+  np,: 179 181 191 193 197 199 211 223 227 229
+  np,: 233 239 241 251 257 263 269 271 277 281
+  np,: 283 293 307 311 313 317 331 337 347 349
+  np,: 353 359 367 373 379 383 389 397 401 409
+  np,: 419 421 431 433 439 443 449 457 461 463
+  np,: 467 479 487 491 499 503 509 521 523 541
+#+end_src
+
+** fibonacci
+*** Fibonacci
+#+begin_src k
+  fibm: 1 1
+  fib: {do[x-1-#m:fibm; m,:+/-2#m; fibm::m]; m x}
+
   fib 12
 233
-  fibs
+
+  fibm
 1 1 2 3 5 8 13 21 34 55 89 144 233
 #+end_src
 
-** goal: choose[k;n]
+** combinations
+*** How many 5-card poker hands are there?
 
-Cnk: 52 (1,,[;1]@+':)\ 1
+#+begin_src k
+  fact: */1+!:
+  fact 5
+120
+
+  choose:{[n;k] fact[n] % (fact[k]*fact[n-k])}
+  choose[52;5]
+
+#+end_src
+
+*** None, apparently?
+
+#+begin_src k
+  fact: */1+!:
+  fact 5
+120
+
+  choose:{[n;k] fact[n] % (fact[k]*fact[n-k])}
+  choose[52;5]
+0n
+#+end_src
+
+*** Another approach
+
+#+begin_src k
+  C: 52 (1,,[;1]@+':)\ ,1
+
+  C[52;5]
+2869685
+#+end_src
+
+*** huh?
+#+begin_src k
+  /   C: 52 (1,,[;1]@+':)\ ,1
+#+end_src
+
+*** huh?
+#+begin_src k
+  /   C: 52 (1,,[;1]@+':)\ ,1
+  /       n (   monad   )\  x           : apply monad n times
+#+end_src
+
+*** eachpair
+#+begin_src k
+  /   C: 52 (1,,[;1]@+':)\ ,1
+
+  +': ,1             / sum each pair
+()
+
+  +': 2 3 5 7        / (2+3; 3+5; 5+7)
+5 8 12
+#+end_src
+
+*** append
+#+begin_src k
+  /   C: 52 (1,,[;1]@+':)\ ,1
+
+  1,,[;1] 2 3 5     / ,[;1] is a projection
+1 2 3 5 1
+
+  1,,[;1]@+': ,1   / @ applies
+1 1
+#+end_src
+
+*** all together now
+#+begin_src k
+  5 (1,,[;1]@+':)\ ,1
+(,1
+ 1 1
+ 1 2 1
+ 1 3 3 1
+ 1 4 6 4 1
+ 1 5 10 10 5 1)
+#+end_src
+
+*** how it works
+#+begin_src k
+  C[52]
+1 52 1326 22100 270725 2598960 20358520 133784560 752538150 -615891896 -1359844964 274186696
+220976662 -641600208 -560181352 1730516592 -561583133 -1694525140 1477275890 156986316 1762265975
+-1814131872 -1775373584 111885536 2103721700 -1938798992 134115464 -1938798992 2103721700 111885536
+-1775373584 -1814131872 1762265975 156986316 1477275890 -1694525140 -561583133 1730516592 -560181352
+-641600208 220976662 274186696 -1359844964 -615891896 752538150 133784560 20358520 2598960 270725
+22100 1326 52 1
+#+end_src
+
+*** how it works
+#+begin_src k
+  10 # C[52]
+1 52 1326 22100 270725 2598960 20358520 133784560 752538150 -615891896
+
+  C[52;5]
+2598960
+#+end_src
+
+*** full disclosure, pt 1
+#+begin_src k
+  choose
+{[n;k] fact[n] % (fact[k]*fact[n-k])}
+
+  fact[52 - 5]
+0
+
+   52 - !5
+52 51 50 49 48
+
+  */ 52 - !5
+311875200
+#+end_src
+
+*** full disclosure, pt 2
+#+begin_src k
+  fact: */1  +!:    / old
+  fact: */1.0+!:    / new
+
+  choose[52;5]
+2598960.0
+#+end_src
 
 
-** goal: h2d
-*** char to number
+*** full disclosure, pt 3
+#+begin_src k
+  C: 52 (1,,[;1]@+':)\ ,1
+  `0:"-X"0>C
+#+end_src
+
+** hex to decimal
+
+*** goal: h2d
+
+h2d: hex to decimal
+
+*** parse hex digits
+#+begin_src k
+  hexen: ![;16] @ "0123456789abcdef0123456789ABCDEF"?/:
+
+  hexen "C0fFEe"
+12 0 15 15 14 14
+#+end_src
+
+*** powers of 10?
+#+begin_src k
+  +/ 1 2 8 7 * 1000 100 10 1
+1287
+
+  {_ +/x*|10^!#x} 1 2 8 7
+1287
+
+#+end_src
+
 *** powers of 16
 #+begin_src k
-  {x* _16^!#x}
-  {x* */1,1_(#x)#16]}
-#+end_src
-*** powers of 10?
-*** projection!
-*** _sv
+  {_ +/x*|10^!#x} 1 2 8 7
+1287
 
+  {_ +/x*|16^!#x} hexen "C0fFEe"
+12648430
+#+end_src
+
+*** sv
 #+begin_src k
-  p[1 2 0 ; 5]
-35.0
-  5 _sv 1 2 0
-35
+  {_ +/x*|16^!#x} hexen "C0fFEe"
+12648430
+
+  sv: {_ +/y*|x^!#y}   / scalar from vector
+  sv[16; hexen "C0fFEe"]
+12648430
 #+end_src
-
-
 
 ** polynomials
-*** simple examples
+*** _sv and _vs
+#+begin_src k
+  10 _sv 2 3 5 7   / scalar from vector
+2357
 
-/ +/  _ x⁰, _ x¹, _ x², _ x³
-_sv[  0     0     0     0 ; i: !10 ]
-_sv[  0     0     0     0 ; i ]
-_sv[  0     0     0     0 ; i ]
-_sv[  0     0     0     0 ; i ]
+  10 _vs 2357      / vector from scalar
+2 3 5 7
+#+end_src
+
+*** _sv, part 1
+
+=_sv[x;y]= evaluates y as digits in base x
+
+#+begin_src k
+  10 _sv 1 0 1 0            / base 10
+1010
+
+  2 _sv 1 0 1 0             / base 2
+10
+#+end_src
+
+*** _sv, part 2
+
+=_sv[x;y]= *evaluates a polynomial*
+#+begin_src k
+  _sv[; 2 3 5] @/: !10
+5 10 19 32 49 70 95 124 157 194
+
+  {(2*x*x) + (3*x) + 5} @/: !10
+5 10 19 32 49 70 95 124 157 194
+#+end_src
+
+*** _sv, part 3
+
+=_sv[x;y]= is just plain handy.
+
+#+begin_src k
+  0I 24 60 60 _sv 1 0 0 0  / number of seconds in 1 day
+86400
+#+end_src
+
+*** _vs
+**** using _vs
+
+Here's a fun thing to do with _vs
+
+#+begin_src a
+  :abc: 2 _vs !8
+(0 0 0 0 1 1 1 1
+ 0 0 1 1 0 0 1 1
+ 0 1 0 1 0 1 0 1)
+
+  a:abc[0]; b:abc[1]; c:abc[2]
+#+end_src
+
+**** comparing truth tables:
+#+begin_src k
+  a & ~(b = c)
+0 0 0 0 0 1 1 0
+
+  a > (b = c)
+0 0 0 0 0 1 1 0
+#+end_src
+
+**** incidentally:
+#+begin_src k
+  xor: ~=
+  xor[a; b]
+0 0 1 1 1 1 0 0
+
+  BADXOR: (0 1;1 0)
+  BADXOR[a;b] ~ xor[a;b]  / whoops.
+0
+
+  XOR: (0 1;1 0)'
+  XOR[a;b] ~ xor[a;b]
+1
+#+end_src
 
 
-** goal: take the derivative
+**** xor scan
+#+begin_src k
+  `0:" X" @ XOR\\ 16#1
+XXXXXXXXXXXXXXXX
+X X X X X X X X
+XX  XX  XX  XX
+X   X   X   X
+XXXX    XXXX
+X X     X X
+XX      XX
+X       X
+XXXXXXXX
+X X X X
+XX  XX
+X   X
+XXXX
+X X
+XX
+X
+#+end_src
+
+
+** derivatives
+
+*** a polynomial
+#+begin_src k
+  p: 2 3 5 7           /  2x³  + 3x² + 5x + 7
+  _sv[;p] @/: !10
+7 17 45 103 203 357 577 875 1263 1753
+#+end_src
+
+Wolfram alpha says the derivative is \{6x^2 + 6x + 5}
 
 *** calculus refresher
 
+The polynomial derivative is just a rewrite rule:
+
+   a xⁿ → (a ⋅ n) xⁿ⁻¹
+   a x⁰ → 0
+
+: 2x³  + 3x²  + 5x  +  7
+:      ↘      ↘     ↘
+: 0    + 6x²  + 6x  +  5
+
+#+begin_src k
+  p: 2 3 5 7           / 2x³  + 3x² + 5x + 7
+  d4: (0 3 0 0; 0 0 2 0; 0 0 0 1; 0 0 0 0)
+  +/ p * d4
+0 6 6 5
+
+#+end_src
 *** derivatives
 
 #+begin_src k
@@ -158,8 +451,6 @@ _sv[  0     0     0     0 ; i ]
 #+begin_src k
 
 #+end_src
-
-** goal: integration
 
 ** goal: permutations
 *** Another fine matrix
