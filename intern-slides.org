@@ -1,16 +1,25 @@
+#+TITLE: Advanced Array Techniques
 #+STARTUP: beamer
+#+OPTIONS: H:3
+#+BEAMER_OUTER_THEME: miniframes [subsection=false]
+#+BEAMER_THEME: Madrid
 
-* Arrays as Functions
+# !! to get this to export, I had to re-launch emacs from a shell after
+#    $ export PATH=$PATH:/usr/local/texlive/2016/bin/x86_64-darwin/
+#    then: c-c c-e l O
 
-* But First... Scope.
-** Scope: The basics
+* scope
+** directories
+** closures
+*** Prelude: Scope
+
 It's ugly and complicated, but here's all you really need to know.
 
 - Global stuff goes in the k-tree. It's just a big nested dictionary.
 
 - You can change your location in the tree with =\d= and query it with =_d=.
 
-** Scope: functions and the k-tree
+*** Scope: functions and the k-tree
 
 Functions run in the current directory, not the one where they were defined:
 
@@ -27,7 +36,7 @@ Functions run in the current directory, not the one where they were defined:
 123
 #+end_src
 
-** Scope: closures
+*** Scope: closures
 
 Closures work, but only one level deep.
 
@@ -38,15 +47,15 @@ Closures work, but only one level deep.
 
 so if you need nested closures, pass everything you want to close over explicitly.
 
-** Scope: misc
+*** Scope: misc
 
 - you can use =x::123= to assign globals, but probably shoudn't.
 - instead use =.path.to.x: 123=
 - pass a symbol containing a path to use an arbitrary scope.
 
 
-* Arrays as functions
-
+* apply
+** Applications of Arrays
 ** primes
 *** nth prime
 #+begin_src k
@@ -75,7 +84,7 @@ so if you need nested closures, pass everything you want to close over explicitl
 #+end_src
 
 ** fibonacci
-*** Fibonacci
+*** fib
 #+begin_src k
   fibm: 1 1
   fib: {do[x-1-#m:fibm; m,:+/-2#m; fibm::m]; m x}
@@ -89,7 +98,6 @@ so if you need nested closures, pass everything you want to close over explicitl
 
 ** combinations
 *** How many 5-card poker hands are there?
-
 #+begin_src k
   fact: */1+!:
   fact 5
@@ -100,8 +108,7 @@ so if you need nested closures, pass everything you want to close over explicitl
 
 #+end_src
 
-*** None, apparently?
-
+*** None, apparently...
 #+begin_src k
   fact: */1+!:
   fact 5
@@ -113,7 +120,6 @@ so if you need nested closures, pass everything you want to close over explicitl
 #+end_src
 
 *** Another approach
-
 #+begin_src k
   C: 52 (1,,[;1]@+':)\ ,1
 
@@ -209,7 +215,6 @@ so if you need nested closures, pass everything you want to close over explicitl
 2598960.0
 #+end_src
 
-
 *** full disclosure, pt 3
 #+begin_src k
   C: 52 (1,,[;1]@+':)\ ,1
@@ -245,7 +250,8 @@ h2d: hex to decimal
   {_ +/x*|10^!#x} 1 2 8 7
 1287
 
-  {_ +/x*|16^!#x} hexen "C0fFEe"
+  h2d: {_ +/x*|16^!#x}
+  h2d[hexen "C0fFEe"]
 12648430
 #+end_src
 
@@ -259,7 +265,7 @@ h2d: hex to decimal
 12648430
 #+end_src
 
-** polynomials
+** encoding
 *** _sv and _vs
 #+begin_src k
   10 _sv 2 3 5 7   / scalar from vector
@@ -284,6 +290,7 @@ h2d: hex to decimal
 *** _sv, part 2
 
 =_sv[x;y]= *evaluates a polynomial*
+
 #+begin_src k
   _sv[; 2 3 5] @/: !10
 5 10 19 32 49 70 95 124 157 194
@@ -384,46 +391,32 @@ The polynomial derivative is just a rewrite rule:
 :      ↘      ↘     ↘
 : 0    + 6x²  + 6x  +  5
 
+*** implementation
+
 #+begin_src k
-  p: 2 3 5 7           / 2x³  + 3x² + 5x + 7
-  d4: (0 3 0 0; 0 0 2 0; 0 0 0 1; 0 0 0 0)
+  p: 2 3 5 7           / 2x³ + 3x² + 5x + 7
+  d4: (0 3 0 0
+       0 0 2 0
+       0 0 0 1
+       0 0 0 0)
   +/ p * d4
-0 6 6 5
+0 6 6 5                / 6x² + 6x + 5
 
 #+end_src
-*** derivatives
 
+*** dot product
 #+begin_src k
-  Dm:{1!'(!x)*Im x}
 
-  Dm 4
-(0 0 0 0
- 1 0 0 0
- 0 2 0 0
- 0 0 3 0)
+   2     0 3 0 0      0 6 0 0
+   3  ×  0 0 2 0  =   0 0 6 0
+   5     0 0 0 1      0 0 0 5
+   7     0 0 0 0    + 0 0 0 0
+                    ---------
+                      0 6 6 5
 #+end_src
 
-*** Dm in action!
-
-#+begin_src k
-  Dm 4
-(0 0 0 0
- 1 0 0 0
- 0 2 0 0
- 0 0 3 0)
-
-  f: 2 3 5 7            / 2 + 3x + 5x^2 + 7x^3
-
-  dot[Dm[#f]] f
-3 10 21 0
-#+end_src
-
-
-
-** dot product: matrices
 *** identity matrix
 #+begin_src k
-/  Im: {{x=/:x}@!x};  Im 4
    Im: {v=/:v:!x};  Im 4
 (1 0 0 0
  0 1 0 0
@@ -431,28 +424,7 @@ The polynomial derivative is just a rewrite rule:
  0 0 0 1)
 #+end_src
 
-:  Im: {v=/:v:!x};  Im 4
-
-*** general tables
-#+begin_src k
-  tb: {[f;x] v (f/:) v:!x}
-
-  tb[+;4]
-#+end_src
-
-*** matrix as dyad
-#+begin_src k
-  mul: v */: v:!10
-  mul[ 3; 6 ]
-  mul/ 7 2
-#+end_src
-
-*** state machine!
-#+begin_src k
-
-#+end_src
-
-** goal: permutations
+** permutations
 *** Another fine matrix
 
 #+begin_src k
@@ -466,7 +438,7 @@ The polynomial derivative is just a rewrite rule:
  1 0 0 0 0 0)
 #+end_src
 
-** permutation matrix
+*** permutation matrix
 
 #+begin_src k
   m
@@ -481,7 +453,10 @@ The polynomial derivative is just a rewrite rule:
 13 5 3 2 11 7
 #+end_src
 
-** permutation vector
+
+* permutation vectors
+** permutation vectors
+*** permutation vector
 
 #+begin_src k
   a: 2 3 5 7 11 13
@@ -494,21 +469,21 @@ The polynomial derivative is just a rewrite rule:
 13 5 3 2 11 7
 #+end_src
 
-** permutation vectors
+*** permutation vectors
 #+begin_src k
   v: 5 2 1 0 4 3
   v @ 0 1 2
 5 2 1
 #+end_src
 
-** permutation vectors
+*** permutation vectors
 #+begin_src k
   v: 5 2 1 0 4 3
   "tae!on" @ v
 "neato!"
 #+end_src
 
-** permutation vectors
+*** permutation vectors
 #+begin_src k
   v: 5 2 1 0 4 3
   "tae!on" @ v
@@ -517,7 +492,8 @@ The polynomial derivative is just a rewrite rule:
 
 How did I figure out which scrambled string to use there?
 
-** permutation powers
+** powers
+*** permutation powers
 #+begin_src k
   6 v\v
 (5 2 1 0 4 3
@@ -529,13 +505,13 @@ How did I figure out which scrambled string to use there?
  5 2 1 0 4 3)
 #+end_src
 
-** one less than the cycle length
+*** one less than the cycle length
 #+begin_src k
   "neato!" @ 5 v/!6
 "tae!on"
 #+end_src
 
-** an easier way
+*** an easier way
 
 #+begin_src k
   v
@@ -546,7 +522,7 @@ How did I figure out which scrambled string to use there?
 0 1 2 3 4 5
 #+end_src
 
-** grade as inverse
+*** grade as inverse
 
 The grade of a permutation vector is the inverse permutation.
 
@@ -560,9 +536,13 @@ The grade of a permutation vector is the inverse permutation.
 "neato!"
 #+end_src
 
-* mini-db demo
 
-* a mystery function
+* mini-db
+
+
+* reading K
+** reading K
+*** mystery function, take 1
 
 #+begin_src k
   f: {&2=#:'&:'+{0,n#(x#0),1}@/:!n:x}
@@ -571,7 +551,7 @@ The grade of a permutation vector is the inverse permutation.
 2 3
 #+end_src
 
-* mystery function, take 2
+*** mystery function, take 2
 
 #+begin_src k
   /  {&2=#:'&:'+{0,n#(x#0),1}@/:!n:x}
@@ -582,7 +562,7 @@ The grade of a permutation vector is the inverse permutation.
 2 3
 #+end_src
 
-* mystery function, take 3
+*** mystery function, take 3
 
 #+begin_src k
   /  {&2=#:'&:'+{0,n#(x#0),1}@/:!n:x}
@@ -593,4 +573,3 @@ The grade of a permutation vector is the inverse permutation.
   f 3
 2 3
 #+end_src
-
